@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Question</title>
-</head>
-
-<body>
+<% layout('/layout/boilerplate') %>
     <h1>Edit Question</h1>
     <form action="/questions/<%= question._id%>?_method=PUT" method="post">
         <div>
@@ -32,6 +22,3 @@
         <button>Update Question</button>
     </form>
     <a href="/questions/<%=question._id %>">Back to Questions</a>
-</body>
-
-</html>
