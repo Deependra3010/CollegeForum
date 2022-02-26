@@ -1,24 +1,38 @@
 <% layout('/layout/boilerplate') %>
-    <h1>Edit Question</h1>
-    <form action="/questions/<%= question._id%>?_method=PUT" method="post">
-        <div>
-            <label for="question">Question: </label>
-            <input type="text" id="question" name="question[question]" value="<%= question.question %>">
+    <div class="row">
+        <h1 class="text-center">Edit Question</h1>
+        <div class="col-6 offset-3 border rounded">
+            <form action="/questions/<%= question._id%>?_method=PUT" method="post">
+                <div class="mb-3">
+                    <label for="question" class="form-label">Question: </label>
+                    <input type="text" id="question" name="question[question]" class="form-control"
+                        value="<%= question.question %>">
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category </label>
+                    <select name="question[category]" id="category" class="form-control">
+                        <% for(let category of categories){ %>
+                            <option value="<%=category%>" <%=question.category===category?'selected':'' %>>
+                                <%=category%>
+                            </option>
+                            <% } %>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="image">Image Url </label>
+                    <input class="form-control" type="text" id="image" name="question[image]"
+                        value="<%= question.image %> ">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="description">Description </label>
+                    <input class="form-control" type="text" id="description" name="question[description]"
+                        value="<%= question.description %> ">
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-info">Update Question</button>
+                </div>
+            </form>
+            <a href="/questions/<%=question._id %>">Back to Questions</a>
         </div>
-        <div>
-            <label for="category">Category: </label>
-            <select name="question[category]" id="category">
-                <% for(let category of categories){ %>
-                    <option value="<%=category%>" <%=question.category===category?'selected':'' %>>
-                        <%=category%>
-                    </option>
-                    <% } %>
-            </select>
-        </div>
-        <div>
-            <label for="description">Description: </label>
-            <input type="text" id="description" name="question[description]" value="<%= question.description %> ">
-        </div>
-        <button>Update Question</button>
-    </form>
-    <a href="/questions/<%=question._id %>">Back to Questions</a>
+    </div>

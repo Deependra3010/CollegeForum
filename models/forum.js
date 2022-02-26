@@ -13,6 +13,9 @@ const ForumSchema = new Schema({
         type: String,
         // lowercase: true,
         enum: ['Exam', 'University', 'Engineering', 'Management', 'Programming', 'Placements', 'Other']
+    },
+    image: {
+        type: String
     }
     // date: {
     //     type: Date,

@@ -2,12 +2,28 @@
     <h1>All Questions</h1>
     <ul>
         <% for(let question of questions){ %>
-            <li>
-                <a href="/questions/<%= question._id%>">
-                    <%= question.question%>
-                </a>
-
-            </li>
-            <% } %>
+            <% if(question.image){ %>
+                <div class="row border rounded m-3 p-3">
+                    <div class="col-md-4">
+                        <img src="<%= question.image %> " alt="" class="img-fluid">
+                    </div>
+                    <div class="col-md-8">
+                        <h5 class="card-title">
+                            <%= question.question %>
+                        </h5>
+                        <a href="/questions/<%= question._id %> " class="btn btn-primary">View Answers</a>
+                    </div>
+                </div>
+                <% } %>
+                    <% if(!question.image){ %>
+                        <div class="row border m-3 p-3">
+                            <div class="col-md-12">
+                                <h5 class="card-title">
+                                    <%= question.question %>
+                                </h5>
+                                <a href="/questions/<%= question._id %> " class="btn btn-primary">View Answers</a>
+                            </div>
+                        </div>
+                        <% } %>
+                            <% } %>
     </ul>
-    <a href="/questions/new">Ask Question</a>
