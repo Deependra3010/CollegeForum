@@ -3,11 +3,14 @@
         <div class="row">
             <h1 class="text-center mb-3">Ask Question</h1>
             <div class="col-6 offset-3 border rounded p-3">
-                <form action="/Questions" method="post">
+                <form action="/Questions" method="post" novalidate class="validateForm">
                     <div class="mb-3">
                         <label class="form-label" for="question">Question: </label>
                         <input class="form-control" type="text" name="question[question]" id="question"
-                            placeholder="Question">
+                            placeholder="Question" required>
+                        <div class="valid-feedback">
+                            looks Good!
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="category">Category: </label>
@@ -36,8 +39,4 @@
 
             </div>
         </div>
-
-
-
-
         <a href="/questions">Go Back</a>
