@@ -44,7 +44,7 @@ app.post('/questions', catchAsync(async (req, res) => {
     await question.save();
     res.redirect(`/questions/${question._id}`)
 }));
-app.get('/questions/:id', catchAsync(async (req, res,) => {
+app.get('/questions/:id', catchAsync(async (req, res) => {
     const question = await Forum.findById(req.params.id)
     res.render('Questions/show', { question });
 }));
