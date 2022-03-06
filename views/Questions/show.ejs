@@ -1,31 +1,83 @@
 <% layout('/layout/boilerplate') %>
     <div class="row">
+        <a href="/questions">Back to All Questions</a>
         <h1 class="text-center mb-3">Answers</h1>
-        <div class="col-6 offset-3">
-            <div class="card mb-3">
-                <img src="<%= question.image%>" class="card-img-top" alt="">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <%= question.question %>
-                    </h5>
-                    <p class="card-text text-muted">
-                        <%= question.category %>
-                    </p>
-                    <p class="card-text">
-                        <%= question.description %>
-                    </p>
+        <% if(question.image){ %>
+            <div class="col-md-12">
+                <div class="card mb-3">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img src="<%= question.image%>" class="rounded-start" alt="" width="100%">
+                        </div>
+                        <div class="card-body col-md-8">
+                            <h5 class="card-title">
+                                <%= question.question %>
+                            </h5>
+                            <p class="card-text text-muted">
+                                <%= question.category %>, (Date here)
+                            </p>
+                            <p class="card-text">
+                                <%= question.description %>
+                            </p>
+                            <a href="/questions/<%= question._id %>/edit" class="card-link btn btn-warning">Edit</a>
+                            <form action="/Questions/<%= question._id%>?_method=DELETE" method="post" class="d-inline">
+                                <button class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <a href="/questions/<%= question._id %>/edit" class="card-link btn btn-warning">Edit</a>
+                <% } %>
+                    <% if(!question.image){ %>
+                        <div class="col-md-12">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <%= question.question %>
+                                    </h5>
+                                    <p class="card-text text-muted">
+                                        <%= question.category %>
+                                    </p>
+                                    <p class="card-text">
+                                        <%= question.description %>
+                                    </p>
 
-                    <form action="/Questions/<%= question._id%>?_method=DELETE" method="post" class="d-inline">
-                        <button class="btn btn-danger">Delete</button>
-                    </form>
-                </div>
+                                    <a href="/questions/<%= question._id %>/edit"
+                                        class="card-link btn btn-warning">Edit</a>
 
-                <div class="card-footer text-muted">
-                    <a href="/questions">Back to All Questions</a>
-                </div>
+                                    <form action="/Questions/<%= question._id%>?_method=DELETE" method="post"
+                                        class="d-inline">
+                                        <button class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <% } %>
+                                <h2>Answer the Question</h2>
+                                <form action="/questions/<%= question._id %>/answers" method="POST"
+                                    class="mb-3 validateForm" novalidate>
+                                    <div class="mb-3">
+                                        <label for="body" class="form-label">Answer</label>
+                                        <textarea class="form-control" name="answer[body]" id="body" cols="30" rows="3"
+                                            placeholder="Write your Answer here...." required></textarea>
+                                        <div class="valid-feedback">
+                                            Looks Good!
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-success">Submit</button>
+                                </form>
+                                <% for(let answer of question.answers) {%>
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Name</h5>
+                                            <p class="card-text">Answer: <%= answer.body %>
+                                            </p>
+                                            <form
+                                                action="/questions/<%= question._id %>/answers/<%= answer._id %>?_method=DELETE"
+                                                method="POST">
+                                                <button class="btn btn-sm btn-danger">Delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <% } %>
+                        </div>
+
             </div>
-        </div>
-    </div>

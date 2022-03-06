@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressErrors');
 const Forum = require('./models/forum');
+const Answer = require('./models/answer');
 
 const categories = ['Exam', 'University', 'Engineering', 'Management', 'Programming', 'Placements', 'Other'];
 
@@ -45,7 +46,7 @@ app.post('/questions', catchAsync(async (req, res) => {
     res.redirect(`/questions/${question._id}`)
 }));
 app.get('/questions/:id', catchAsync(async (req, res,) => {
-    const question = await Forum.findById(req.params.id)
+    const question = await Forum.findById(req.params.id).populate('answers');
     res.render('Questions/show', { question });
 }));
 app.get('/questions/:id/edit', catchAsync(async (req, res) => {
@@ -62,6 +63,21 @@ app.delete('/questions/:id', catchAsync(async (req, res) => {
     await Forum.findByIdAndDelete(id);
     res.redirect('/questions');
 }));
+
+app.post('/questions/:id/answers', catchAsync(async (req, res) => {
+    const question = await Forum.findById(req.params.id);
+    const answer = new Answer(req.body.answer);
+    question.answers.push(answer);
+    await answer.save();
+    await question.save();
+    res.redirect(`/questions/${question._id}`)
+}));
+app.delete('/questions/:id/answers/:answerId', catchAsync(async (req, res) => {
+    const { id, answerId } = req.params;
+    await Forum.findByIdAndUpdate(id, { $pull: { answers: answerId } });
+    await Answer.findByIdAndDelete(answerId);
+    res.redirect(`/questions/${id}`);
+}))
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found!!', 404));
