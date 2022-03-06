@@ -45,8 +45,13 @@ app.post('/questions', catchAsync(async (req, res) => {
     await question.save();
     res.redirect(`/questions/${question._id}`)
 }));
+<<<<<<< HEAD
 app.get('/questions/:id', catchAsync(async (req, res,) => {
     const question = await Forum.findById(req.params.id).populate('answers');
+=======
+app.get('/questions/:id', catchAsync(async (req, res) => {
+    const question = await Forum.findById(req.params.id)
+>>>>>>> 5785c587294d0d2adb91f1bdfa4f28a38d43be9f
     res.render('Questions/show', { question });
 }));
 app.get('/questions/:id/edit', catchAsync(async (req, res) => {
