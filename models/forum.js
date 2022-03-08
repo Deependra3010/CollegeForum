@@ -18,6 +18,13 @@ const ForumSchema = new Schema({
     image: {
         type: String
     },
+    name: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    date: {
+        type: Date,
+    },
     answers: [
         {
             type: Schema.Types.ObjectId,
