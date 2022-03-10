@@ -21,10 +21,10 @@
 
 <body class="d-flex flex-column vh-100">
     <%- include('../partials/navbar') %>
-        <div class="container mt-5">
+        <div class="container">
             <%- include('../partials/flash') %>
                 <div class="fontonimage">
-                    <h1>College Forum</h1>
+                    <h1 class="mt-5">College Forum</h1>
                     <p>Sharing knowledge is the most<br> fundamental act of friendship<br> because it is a way you can
                         give<br>
                         something without loosing something.</p>
@@ -50,31 +50,39 @@
                         </ul>
                     </div>
                 </div>
-                <ul>
+                <ul class="allQuestions">
                     <% var j=1; %>
                         <% for(let question of questions){ %>
-                            <div class="row border-bottom m-3 p-3">
+                            <div class="row border-bottom questionContent mb-3">
                                 <div class="col-md-12">
-                                    <h5 class="text-muted">
-                                        <%= j%>
-                                    </h5>
-                                    <h4>
-                                        <%= ques[j-1].name.username %>
-                                    </h4>
-                                    <h5 class="card-title">
-                                        <%= question.question %>
-                                    </h5>
-                                    <a href="/questions/<%= question._id %>" class="btn ">
-                                        <small> View Answers <i class="fa-solid fa-arrow-right arrow"></i></small>
-                                    </a>
-                                    <% var i=0 %>
-                                        <% for(let answer of question.answers) {%>
-                                            <% if(answer) {%>
-                                                <% i++; %>
-                                                    <% } %>
-                                                        <% } %>
-                                                            <small class="ms-5">Total answers: <%= i %>
-                                                            </small>
+                                    <div class="forFlex">
+                                        <div>
+                                            <h5 class="text-muted me-3 username">
+                                                <%= j%>.
+                                            </h5>
+                                        </div>
+                                        <div>
+                                            <h5 class="text-muted username">
+                                                <i class="fa-solid fa-circle-user"></i>
+                                                <%= ques[j-1].name.username %>
+                                            </h5>
+                                            <h5 class="card-title question">
+                                                <%= question.question %>
+                                            </h5>
+                                            <a href="/questions/<%= question._id %>" class="btn ">
+                                                <small><i class="fa-solid fa-message"></i> View Answers <i
+                                                        class="fa-solid fa-arrow-right arrow"></i></small>
+                                            </a>
+                                            <% var i=0 %>
+                                                <% for(let answer of question.answers) {%>
+                                                    <% if(answer) {%>
+                                                        <% i++; %>
+                                                            <% } %>
+                                                                <% } %>
+                                                                    <small class="ms-5">Total answers: <%= i %>
+                                                                    </small>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <% i++, j++; %>

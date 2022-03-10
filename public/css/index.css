@@ -3,10 +3,47 @@ body{
     background-repeat: no-repeat;
     background-size:  100% 50vh;
     font-family: 'Poppins', sans-serif;
+    /* background-color: #eee; */
 }
 .fontonimage{
     margin-top: 10vh;
 }
 .Qheading{
     display: flex;
+    margin-top: 11vh;
 }
+.forFlex{
+    display: flex;
+}
+.questionContent{
+    margin: 1rem;
+    padding: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+    .questionContent{
+        margin: 0.1rem;
+        padding: 0rem;
+    }
+    .username{
+        font-size: 1.1rem;
+    }
+    .Qheading{
+        margin-top: 2rem;
+    }
+  }
+
+@media screen and (max-width: 426px) {
+    .username{
+        font-size: 1rem;
+    }
+    .question{
+        font-size: 1rem;
+    }
+    .Qheading{
+        margin-top: 2rem;
+    }
+    .allQuestions{
+        margin-left: -1rem;
+    }
+  }
