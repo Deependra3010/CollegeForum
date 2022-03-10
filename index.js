@@ -100,8 +100,16 @@ app.get('/logout', (req, res) => {
 })
 
 app.get('/questions', catchAsync(async (req, res) => {
-    const questions = await Forum.find({});
-    res.render('Questions/index', { questions });
+    const ques = await Forum.find().populate('name');
+    const { category } = req.query;
+    if (category) {
+        const questions = await Forum.find({ category });
+        res.render('Questions/index', { questions, categories, ques });
+    }
+    else {
+        const questions = await Forum.find({});
+        res.render('Questions/index', { questions, categories, ques });
+    }
 }));
 app.get('/questions/new', isLoggedIn, (req, res) => {
     res.render('Questions/new', { categories })
@@ -126,7 +134,7 @@ app.get('/questions/:id', catchAsync(async (req, res) => {
         req.flash('error', 'Connot find the Campground!');
         return res.redirect('/questions');
     }
-    res.render('questions/show', { question });
+    res.render('Questions/show', { question });
 }));
 app.get('/questions/:id/edit', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
     const question = await Forum.findById(req.params.id);
@@ -134,7 +142,7 @@ app.get('/questions/:id/edit', isLoggedIn, isAuthor, catchAsync(async (req, res)
         req.flash('error', 'Connot find the Campground!');
         return res.redirect('/questions');
     }
-    res.render('questions/edit', { question, categories });
+    res.render('Questions/edit', { question, categories });
 }));
 app.put('/questions/:id', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
     const { id } = req.params;

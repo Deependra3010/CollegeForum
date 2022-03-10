@@ -1,0 +1,18 @@
+body{
+    /* background: rgb(0,172,150);
+background: linear-gradient(307deg, rgba(0,172,150,0.6758053563222164) 33%, rgba(55,156,150,1) 72%, rgba(0,212,255,1) 98%); */
+background-image:linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/32/Mc8kW4x9Q3aRR3RkP5Im_IMG_4417.jpg?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80') ;
+background-size: cover;
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+}
+.forFlex{
+    display: flex;
+    justify-content: center;
+    margin-top: 15%;
+    text-align: center;
+    color: #fff;
+}
+p{
+    font-weight: 500;
+}
