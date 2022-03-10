@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
 const express = require('express');
 const app = express();
 const methodOverride = require('method-override')
@@ -13,6 +17,9 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const localStrategy = require('passport-local');
 const User = require('./models/user');
+const multer = require('multer');
+const { storage, cloudinary } = require('./cloudinary');
+const upload = multer({ storage });
 const { isLoggedIn, isAuthor, isAnswerAuthor } = require('./middleware');
 
 const categories = ['Exam', 'University', 'Engineering', 'Management', 'Programming', 'Placements', 'Other'];
@@ -114,15 +121,18 @@ app.get('/questions', catchAsync(async (req, res) => {
 app.get('/questions/new', isLoggedIn, (req, res) => {
     res.render('Questions/new', { categories })
 });
-app.post('/questions', isLoggedIn, catchAsync(async (req, res) => {
+app.post('/questions', isLoggedIn, upload.array('image'), catchAsync(async (req, res) => {
     if (!req.body.question) throw new ExpressError('Invalid Question Data', 400);
     const question = new Forum(req.body.question);
+    question.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
     question.name = req.user._id;
     question.date = Date.now();
     await question.save();
     req.flash('success', 'We hope you get an Answer soon!');
     res.redirect(`/questions/${question._id}`)
 }));
+
+
 app.get('/questions/:id', catchAsync(async (req, res) => {
     const question = await Forum.findById(req.params.id).populate({
         path: 'answers',
@@ -144,9 +154,18 @@ app.get('/questions/:id/edit', isLoggedIn, isAuthor, catchAsync(async (req, res)
     }
     res.render('Questions/edit', { question, categories });
 }));
-app.put('/questions/:id', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
+app.put('/questions/:id', isLoggedIn, isAuthor, upload.array('image'), catchAsync(async (req, res) => {
     const { id } = req.params;
     const question = await Forum.findByIdAndUpdate(id, { ...req.body.question });
+    const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
+    question.images.push(...imgs);
+    await question.save();
+    if (req.body.deleteImages) {
+        for (let filename of req.body.deleteImages) {
+            await cloudinary.uploader.destroy(filename);
+        }
+        await question.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } })
+    }
     req.flash('success', 'Successfully edited the Question!')
     res.redirect(`/questions/${question._id}`);
 }));

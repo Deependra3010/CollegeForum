@@ -2,6 +2,14 @@ const mongoose = require('mongoose');
 const Answer = require('./answer')
 const Schema = mongoose.Schema;
 
+const ImageSchema = new Schema({
+    url: String,
+    filename: String
+});
+ImageSchema.virtual('thumbnail').get(function () {
+    return this.url.replace('/upload', '/upload/w_200')
+});
+
 const ForumSchema = new Schema({
     question: {
         type: String,
@@ -15,9 +23,7 @@ const ForumSchema = new Schema({
         // lowercase: true,
         enum: ['Exam', 'University', 'Engineering', 'Management', 'Programming', 'Placements', 'Other']
     },
-    image: {
-        type: String
-    },
+    images: [ImageSchema],
     name: {
         type: Schema.Types.ObjectId,
         ref: 'User'

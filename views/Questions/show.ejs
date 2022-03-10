@@ -2,100 +2,90 @@
     <div class="row">
         <a href="/questions">Back to All Questions</a>
         <h1 class="text-center mb-3">Answers</h1>
-        <% if(question.image){ %>
-            <div class="col-md-12">
-                <div class="card mb-3">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <img src="<%= question.image%>" class="rounded-start" alt="" width="100%">
-                        </div>
-                        <div class="card-body col-md-8">
-                            <h5 class="card-title">
-                                <%= question.question %>
-                            </h5>
-                            <p class="card-text text-muted">
-                                <%= question.category %>, <%= question.date %>
-                            </p>
-                            <p class="card-text text-muted">
-                                Asked by <%= question.name.username %>
-                            </p>
-                            <p class="card-text">
-                                <%= question.description %>
-                            </p>
+        <div class="col-md-12">
+            <div class="card mb-3">
+                <div class="row">
 
-                            <% if(currentUser && question.name.equals(currentUser._id)) {%>
-                                <a href="/questions/<%= question._id %>/edit" class="card-link btn btn-warning">Edit</a>
-                                <form action="/Questions/<%= question._id%>?_method=DELETE" method="post"
-                                    class="d-inline">
-                                    <button class="btn btn-danger">Delete</button>
-                                </form>
+                    <div class="col-md-4">
+                        <div id="questionCarousel" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <% question.images.forEach((img, i)=> { %>
+                                    <div class="carousel-item <%= i === 0?'active': '' %> ">
+                                        <img src="<%= img.url %>" class="d-block w-100" alt="...">
+                                    </div>
+                                    <% })%>
+                            </div>
+                            <% if(question.images.length> 1) {%>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#questionCarousel"
+                                    data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#questionCarousel"
+                                    data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
                                 <% } %>
                         </div>
+
+
+                    </div>
+                    <div class="card-body col-md-8">
+                        <h5 class="card-title">
+                            <%= question.question %>
+                        </h5>
+                        <p class="card-text text-muted">
+                            <%= question.category %>, <%= question.date %>
+                        </p>
+                        <p class="card-text text-muted">
+                            Asked by <%= question.name.username %>
+                        </p>
+                        <p class="card-text">
+                            <%= question.description %>
+                        </p>
+
+                        <% if(currentUser && question.name.equals(currentUser._id)) {%>
+                            <a href="/questions/<%= question._id %>/edit" class="card-link btn btn-warning">Edit</a>
+                            <form action="/Questions/<%= question._id%>?_method=DELETE" method="post" class="d-inline">
+                                <button class="btn btn-danger">Delete</button>
+                            </form>
+                            <% } %>
                     </div>
                 </div>
+            </div>
+            <% if(currentUser){ %>
+                <h2>Answer the Question</h2>
+                <form action="/questions/<%= question._id %>/answers" method="POST" class="mb-3 validateForm"
+                    novalidate>
+                    <div class="mb-3">
+                        <label for="body" class="form-label">Answer</label>
+                        <textarea class="form-control" name="answer[body]" id="body" cols="30" rows="3"
+                            placeholder="Write your Answer here...." required></textarea>
+                        <div class="valid-feedback">
+                            Looks Good!
+                        </div>
+                    </div>
+                    <button class="btn btn-success">Submit</button>
+                </form>
                 <% } %>
-                    <% if(!question.image){ %>
-                        <div class="col-md-12">
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <h5 class="card-title">
-                                        <%= question.question %>
-                                    </h5>
-                                    <p class="card-text text-muted">
-                                        <%= question.category %>, <%= question.date %>
-                                    </p>
-                                    <p class="card-text text-muted">
-                                        Asked by <%= question.name.username %>
-                                    </p>
-                                    <p class="card-text">
-                                        <%= question.description %>
-                                    </p>
-
-                                    <% if(currentUser && question.name.equals(currentUser._id)) {%>
-                                        <a href="/questions/<%= question._id %>/edit"
-                                            class="card-link btn btn-warning">Edit</a>
-
-                                        <form action="/Questions/<%= question._id%>?_method=DELETE" method="post"
-                                            class="d-inline">
-                                            <button class="btn btn-danger">Delete</button>
-                                        </form>
-                                        <% } %>
-                                </div>
-                            </div>
-                            <% } %>
-                                <% if(currentUser){ %>
-                                    <h2>Answer the Question</h2>
-                                    <form action="/questions/<%= question._id %>/answers" method="POST"
-                                        class="mb-3 validateForm" novalidate>
-                                        <div class="mb-3">
-                                            <label for="body" class="form-label">Answer</label>
-                                            <textarea class="form-control" name="answer[body]" id="body" cols="30"
-                                                rows="3" placeholder="Write your Answer here...." required></textarea>
-                                            <div class="valid-feedback">
-                                                Looks Good!
-                                            </div>
-                                        </div>
-                                        <button class="btn btn-success">Submit</button>
+                    <% for(let answer of question.answers) {%>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <p class="card-title text-muted">Answered by <%=answer.name.username %>
+                                </p>
+                                <p class="card-text">Answer: <%= answer.body %>
+                                </p>
+                                <% if(currentUser && answer.name.equals(currentUser._id)) {%>
+                                    <form
+                                        action="/questions/<%= question._id %>/answers/<%= answer._id %>?_method=DELETE"
+                                        method="POST">
+                                        <button class="btn btn-sm btn-danger">Delete</button>
                                     </form>
                                     <% } %>
-                                        <% for(let answer of question.answers) {%>
-                                            <div class="card mb-3">
-                                                <div class="card-body">
-                                                    <p class="card-title text-muted">Answered by <%=answer.name.username
-                                                            %>
-                                                    </p>
-                                                    <p class="card-text">Answer: <%= answer.body %>
-                                                    </p>
-                                                    <% if(currentUser && answer.name.equals(currentUser._id)) {%>
-                                                        <form
-                                                            action="/questions/<%= question._id %>/answers/<%= answer._id %>?_method=DELETE"
-                                                            method="POST">
-                                                            <button class="btn btn-sm btn-danger">Delete</button>
-                                                        </form>
-                                                        <% } %>
-                                                </div>
-                                            </div>
-                                            <% } %>
+                            </div>
                         </div>
+                        <% } %>
+        </div>
 
-            </div>
+    </div>

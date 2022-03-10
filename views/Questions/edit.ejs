@@ -24,7 +24,7 @@
                     <h1 class="text-center mb-3">Edit Question</h1>
                     <div class="col-md-6 offset-3 border rounded p-3 content">
                         <form action="/questions/<%= question._id%>?_method=PUT" method="post" novalidate
-                            class="validateForm">
+                            class="validateForm" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="question" class="form-label">Question: </label>
                                 <input type="text" id="question" name="question[question]" class="form-control"
@@ -43,16 +43,25 @@
                                         <% } %>
                                 </select>
                             </div>
-
                             <div class="mb-3">
-                                <label class="form-label" for="image">Image Url </label>
-                                <input class="form-control" type="text" id="image" name="question[image]"
-                                    value="<%= question.image %> ">
+                                <label class="form-label" for="image">Upload Image</label>
+                                <input type="file" class="form-control" name="image" id="image" multiple>
+                                <div class="valid-feedback">Looks Good</div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="description">Description </label>
                                 <input class="form-control" type="text" id="description" name="question[description]"
                                     value="<%= question.description %> ">
+                            </div>
+                            <div class="mb-3">
+                                <% question.images.forEach(function(img, i) { %>
+                                    <img src="<%=img.thumbnail %>" class="img-thumbnail" alt="">
+                                    <div class="form-check-inline">
+                                        <input type="checkbox" id="image-<%=i%>" name="deleteImages[]"
+                                            value="<%=img.filename%>">
+                                    </div>
+                                    <label for="image-<%=i%>">Delete</label>
+                                    <% })%>
                             </div>
                             <div class="mb-3">
                                 <button class="btn btn-info">Update Question</button>
@@ -72,12 +81,3 @@
 </body>
 
 </html>
-
-
-<!-- <div class="row">
-    <h1 class="text-center">Edit Question</h1>
-    <div class="col-6 offset-3 border rounded">
-
-        <a href="/questions/<%=question._id %>">Back to Questions</a>
-    </div>
-</div> -->
