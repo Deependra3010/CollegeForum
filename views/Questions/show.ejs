@@ -134,30 +134,35 @@
                                                     Submit</button>
                                             </form>
                                             <% } %>
-                                                <div class="card mb-3">
+                                                <div class="card mb-3" style="min-height: 100px;">
                                                     <h4 class="text-center mt-2 headAnswer">Answers</h4>
-                                                    <% var x=1; %>
-                                                        <% for(let answer of question.answers) {%>
-                                                            <div class="card-body border-bottom">
-                                                                <p class="card-title text-muted">
-                                                                    <%= x %> <i class="fa-solid fa-circle-user"></i>
-                                                                        <%=answer.name.username %>
-                                                                </p>
-                                                                <p class="card-text">Answer: <%= answer.body %>
-                                                                </p>
-                                                                <% if(currentUser &&
-                                                                    answer.name.equals(currentUser._id)) {%>
-                                                                    <form
-                                                                        action="/questions/<%= question._id %>/answers/<%= answer._id %>?_method=DELETE"
-                                                                        method="POST">
-                                                                        <button class="btn btn-sm "><i
-                                                                                class="fa-solid fa-trash"></i>
-                                                                            Delete</button>
-                                                                    </form>
-                                                                    <% } %>
-                                                            </div>
-                                                            <% x++;%>
-                                                                <% } %>
+                                                    <% if(question.answers.length===0) {%>
+                                                        <p class="card-text">No Answers Available
+                                                        </p>
+                                                        <% } %>
+                                                            <% var x=1; %>
+                                                                <% for(let answer of question.answers) {%>
+                                                                    <div class="card-body border-bottom">
+                                                                        <p class="card-title text-muted">
+                                                                            <%= x %> <i
+                                                                                    class="fa-solid fa-circle-user"></i>
+                                                                                <%=answer.name.username %>
+                                                                        </p>
+                                                                        <p class="card-text">Answer: <%= answer.body %>
+                                                                        </p>
+                                                                        <% if(currentUser &&
+                                                                            answer.name.equals(currentUser._id)) {%>
+                                                                            <form
+                                                                                action="/questions/<%= question._id %>/answers/<%= answer._id %>?_method=DELETE"
+                                                                                method="POST">
+                                                                                <button class="btn btn-sm "><i
+                                                                                        class="fa-solid fa-trash"></i>
+                                                                                    Delete</button>
+                                                                            </form>
+                                                                            <% } %>
+                                                                    </div>
+                                                                    <% x++;%>
+                                                                        <% } %>
                                                 </div>
                     </div>
 
