@@ -23,9 +23,13 @@ const upload = multer({ storage });
 const { isLoggedIn, isAuthor, isAnswerAuthor } = require('./middleware');
 const mongoSanitize = require('express-mongo-sanitize');
 
+const MongoDBStore = require("connect-mongo")(session);
+
 const categories = ['Exam', 'University', 'Engineering', 'Management', 'Programming', 'Placements', 'Other'];
 
-mongoose.connect('mongodb://localhost:27017/College-Forum', {
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/College-Forum';
+
+mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
@@ -40,9 +44,21 @@ app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
 
+const secret = process.env.SECRET || 'thisisasecret';
+const store = new MongoDBStore({
+    url: dbUrl,
+    secret,
+    touchAfter: 24 * 60 * 60
+});
+
+store.on("error", function (e) {
+    console.log("Session store error", e);
+})
+
 const sessionConfig = {
+    store,
     name: 'session',
-    secret: 'thisisasecret',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
