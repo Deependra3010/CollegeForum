@@ -6,11 +6,11 @@ body{
     /* background-color: #eee; */
 }
 .fontonimage{
-    margin-top: 10vh;
+    margin-top: 15vh;
 }
 .Qheading{
     display: flex;
-    margin-top: 11vh;
+    margin-top: 7vh;
 }
 .forFlex{
     display: flex;
@@ -19,7 +19,9 @@ body{
     margin: 1rem;
     padding: 1rem;
 }
-
+.allQuestions{
+    margin-left: -2rem;
+}
 @media screen and (max-width: 768px) {
     .questionContent{
         margin: 0.1rem;
@@ -29,7 +31,10 @@ body{
         font-size: 1.1rem;
     }
     .Qheading{
-        margin-top: 2rem;
+        margin-top: 8rem;
+    }
+    .allQuestions{
+        margin-left: -3rem;
     }
   }
 
@@ -41,9 +46,9 @@ body{
         font-size: 1rem;
     }
     .Qheading{
-        margin-top: 2rem;
+        margin-top: 7rem;
     }
     .allQuestions{
-        margin-left: -1rem;
+        margin-left: -3rem;
     }
   }
