@@ -21,6 +21,7 @@ const multer = require('multer');
 const { storage, cloudinary } = require('./cloudinary');
 const upload = multer({ storage });
 const { isLoggedIn, isAuthor, isAnswerAuthor } = require('./middleware');
+const mongoSanitize = require('express-mongo-sanitize');
 
 const categories = ['Exam', 'University', 'Engineering', 'Management', 'Programming', 'Placements', 'Other'];
 
@@ -40,11 +41,13 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
 
 const sessionConfig = {
+    name: 'session',
     secret: 'thisisasecret',
     resave: false,
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
+        // secure: true,
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
@@ -54,6 +57,10 @@ app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(mongoSanitize({
+    replaceWith: '_'
+}));
+
 passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
