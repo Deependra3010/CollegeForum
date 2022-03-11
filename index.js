@@ -130,15 +130,15 @@ app.get('/logout', (req, res) => {
 })
 
 app.get('/questions', catchAsync(async (req, res) => {
-    const ques = await Forum.find().populate('name');
+    // const ques = await Forum.find().populate('name');
     const { category } = req.query;
     if (category) {
-        const questions = await Forum.find({ category });
-        res.render('Questions/index', { questions, categories, ques });
+        const questions = await Forum.find({ category }).populate('name');
+        res.render('Questions/index', { questions, categories });
     }
     else {
-        const questions = await Forum.find({});
-        res.render('Questions/index', { questions, categories, ques });
+        const questions = await Forum.find({}).populate('name');
+        res.render('Questions/index', { questions, categories });
     }
 }));
 app.get('/questions/new', isLoggedIn, (req, res) => {
