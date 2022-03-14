@@ -69,7 +69,9 @@
                                             Q. <%= question.question %>
                                         </h5>
                                         <p class="card-text text-muted">
-                                            <%= question.category %>, <%= question.date %>
+                                            <%= question.category %>, Asked on: <%= question.date.getDate() %>/
+                                                    <%= question.date.getMonth() + 1 %>/<%= question.date.getFullYear()
+                                                            %>
                                         </p>
                                         <p class="card-text">
                                             <%= question.description %>
@@ -99,7 +101,9 @@
                                                     Q. <%= question.question %>
                                                 </h5>
                                                 <p class="card-text text-muted">
-                                                    <%= question.category %>, <%= question.date %>
+                                                    <%= question.category %>, Asked on: <%= question.date.getDate() %>/
+                                                            <%= question.date.getMonth() + 1 %>/<%=
+                                                                    question.date.getFullYear() %>
                                                 </p>
                                                 <p class="card-text">
                                                     <%= question.description %>
